@@ -125,8 +125,11 @@ int write_uint_le(FILE *f, uint32_t x) {
 }
 
 int write_uint_be(FILE *f, uint32_t x) {
-  (void)f; (void)x;
-  assert(0);
+  fputc(x>>24, f);
+  fputc(x>>16, f);
+  fputc(x>>8,  f);
+  fputc(x>>0,  f);
+  return 0;
 }
 
 int write_double_bin(FILE *f, double x) {
