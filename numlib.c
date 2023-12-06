@@ -75,8 +75,27 @@ int read_uint_le(FILE *f, uint32_t *out) {
 }
 
 int read_uint_be(FILE *f, uint32_t *out) {
-  (void)f; (void)out;
-  assert(0);
+   int b0, b1, b2, b3;
+  b0 = fgetc(f);
+
+  if (b0 == EOF) {
+    return EOF;
+  }
+
+  b1 = fgetc(f);
+  b2 = fgetc(f);
+  b3 = fgetc(f);
+
+  if (b1 == EOF || b2 == EOF || b3 == EOF) {
+    return 1;
+  }
+
+  *out =
+    ((uint32_t)b3)
+    | ((uint32_t)b2 << 8)
+    | ((uint32_t)b1 << 16)
+    | ((uint32_t)b0 << 24);
+  return 0;
 }
 
 int read_double_bin(FILE *f, double *out) {
