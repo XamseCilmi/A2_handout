@@ -1,6 +1,5 @@
 #include "numlib.h"
 #include <assert.h>
-// This works
 int main(int argc, char* argv[]) {
   assert(argc == 1);
   while (1) {
