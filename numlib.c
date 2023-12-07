@@ -137,7 +137,7 @@ int read_double_bin(FILE *f, double *out) {
 }
 
 int write_uint_ascii(FILE *f, uint32_t x) {
-  if (fprintf(f, "%u", x) < 0) {
+  if (fprintf(f, "%lf", x) < 0) {
     return 1;
   } else {
     return 0;
