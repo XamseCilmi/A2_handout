@@ -132,8 +132,35 @@ int read_uint_be(FILE *f, uint32_t *out) {
 }
 
 int read_double_bin(FILE *f, double *out) {
-  (void)f; (void)out;
-  assert(0);
+  int b0 = fgetc(f);
+
+  if (b0 == EOF) {
+    return EOF;
+  }
+
+  int b1 = fgetc(f);
+  int b2 = fgetc(f);
+  int b3 = fgetc(f);
+  int b4 = fgetc(f);
+  int b5 = fgetc(f);
+  int b6 = fgetc(f);
+  int b7 = fgetc(f);
+
+  if (b1 == EOF || b2 == EOF || b3 == EOF || b4 == EOF 
+      || b5 == EOF || b6 == EOF || b7 == EOF) {
+    return 1;
+  }
+
+  ((uint8_t*)out)[0] = (uint8_t)b0;
+  ((uint8_t*)out)[1] = (uint8_t)b1;
+  ((uint8_t*)out)[2] = (uint8_t)b2;
+  ((uint8_t*)out)[3] = (uint8_t)b3;
+  ((uint8_t*)out)[4] = (uint8_t)b4;
+  ((uint8_t*)out)[5] = (uint8_t)b5;
+  ((uint8_t*)out)[6] = (uint8_t)b6;
+  ((uint8_t*)out)[7] = (uint8_t)b7;
+
+  return 0;
 }
 
 int write_uint_ascii(FILE *f, uint32_t x) {
@@ -169,6 +196,10 @@ int write_uint_be(FILE *f, uint32_t x) {
 }
 
 int write_double_bin(FILE *f, double x) {
-  (void)f; (void)x;
-  assert(0);
+  uint8_t *x_ptr = (uint8_t*)&x;
+
+  for (size_t i = 0; i < sizeof(double); ++i) {
+    fputc(*(x_ptr + i), f);
+  }
+  return 0;
 }
