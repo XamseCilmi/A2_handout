@@ -46,8 +46,41 @@ int read_uint_ascii(FILE *f, uint32_t *out) {
 }
 
 int read_double_ascii(FILE *f, double *out) {
-  (void)f; (void)out;
-  assert(0);
+  int read = 0;
+  double num = 0.0;
+  int s = 1;
+  int d_seen = 0;
+  double d_place = 1.0;
+
+  while (1) {
+    int c = fgetc(f);
+
+    if (c == '-' && read == 0) {
+      s = -1;
+    } else if (c >= '0' && c <= '9') {
+      num = num * 10.0 + (c - '0');
+      if (d_seen) {
+        d_place *= 0.1;
+      }
+    } else if (c == '.' && !d_seen) {
+      d_seen = 1;
+    } else {
+      if (c != EOF) {
+        ungetc(c, f);
+      }
+      if (read == 0) {
+        if (c == EOF) {
+          return EOF;
+        } else {
+          return 1;
+        }
+      } else {
+        *out = s * num * d_place;
+        return 0;
+      }
+    }
+    read++;
+  }
 }
 
 int read_uint_le(FILE *f, uint32_t *out) {
