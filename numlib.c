@@ -100,10 +100,10 @@ int read_uint_le(FILE *f, uint32_t *out) {
   }
 
   *out =
-    ((uint32_t)b0 << 24)
-    | ((uint32_t)b1 << 16)
-    | ((uint32_t)b2 << 8)
-    | ((uint32_t)b3);
+    ((uint32_t)b0 )
+    | ((uint32_t)b1 << 8)
+    | ((uint32_t)b2 << 16)
+    | ((uint32_t)b3 << 24);
   return 0;
 }
 
